@@ -9,3 +9,8 @@ You've been asked to refactor the function `deterministicPartitionKey` in [`dpk.
 You will be graded on the exhaustiveness and quality of your unit tests, the depth of your refactor, and the level of insight into your thought process provided by the written explanation.
 
 ## Your Explanation Here
+I have broken down deterministicPartitionKey into 4 different methods each less than 10 lines compared to the original 26 lines.
+Now there are no longer nested if-elses which make understanding the code flow difficult, also the code duplication has reduced.
+I have tried to re-arrange the code such that the process remains same and generates the same output.
+For example `if (typeof candidate !== "string")` line is not needed if we are creating hash `crypto.createHash("sha3-512").update(data).digest("hex")`, as it always returns a string. It is needed only if we directly use partitionKey from event and it is not a string.
+Similarly, MAX_PARTITION_KEY_LENGTH which is 256 can also be breached only by partitionKey passed from event as `crypto.createHash("sha3-512").update(data).digest("hex")` has a fixed length of 128. The only case where this could fail is if MAX_PARTITION_KEY_LENGTH gets reduced (although in that case we would never get a smaller hash)
